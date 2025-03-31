@@ -1,8 +1,7 @@
-package EjemplosLista;
+package BateriasArchivo;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.stream.Stream; 
 
 class Dispositivo{
@@ -37,15 +36,16 @@ class Dispositivo{
     } 
     public void set_Bateria(int bateria){
         Bateria = bateria;
-    }   
-    
-}
-
-public static Dispositivo construyeDesdeArray(String[] elementos) {
+    } 
+    public static Dispositivo construyeDesdeArray(String[] elementos) {
          //Cambia de texto a objetos del tipo de objeto requerido
         return new Dispositivo (Integer.parseInt(elementos[2]),elementos[0],elementos[1]);
          
-    }
+    }  
+    
+}
+
+
 
 public class Main {
     public static void main(String[] args) {
@@ -57,12 +57,12 @@ public class Main {
         */
              stream.map(linea -> linea.split(","))
                    .map(Dispositivo::construyeDesdeArray)  
-                  .mapToDouble(o -> o.get_Bateria())   //Otros métodos mapToInt(), mapToLong(), mapToDouble()
+                  .mapToInt(o -> o.get_Bateria())   //Otros métodos mapToInt(), mapToLong(), mapToDouble()
                      
                   .onClose(() -> System.out.println("\nFinalizando"))
                  
                   // Se realiza una reducción y se suman todos los elementos.
-                  .reduce(Double::sum)    //Double::sum es una función que se utiliza para sumar dos números de punto flotante.
+                  .reduce(Integer::sum)    //Double::sum es una función que se utiliza para sumar dos números de punto flotante.
                   .ifPresent(System.out::println); //ifPresent es un método de la clase Optional
  
         } catch (IOException e) {

@@ -1,0 +1,10 @@
+Apple,iPhone14,75
+Samsung,GalaxyZFold5,65
+Google,Pixel8Pro,80
+Xiaomi,Mi11Ultra,55
+OnePlus,11Pro,90
+Sony,Xperia1V,60
+Motorola,Edge40,70
+Huawei,P50Pro,50
+Realme,GTNeo5,85
+Asus,ROGPhone7,95
