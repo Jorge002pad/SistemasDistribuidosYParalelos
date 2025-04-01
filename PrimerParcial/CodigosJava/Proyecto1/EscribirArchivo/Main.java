@@ -52,6 +52,9 @@ public class Main {
         }
     }
 
+    /*La funcion busca palabras que contengan 3 veces una vocal sin importar que sea mayuscula 
+     * o minuscula.
+     * archivo: Archivo donde tomaremos las palabras para la busqueda*/
     public static void buscarVocales(File archivo){
         try (Stream<String> stream = Files.lines(Paths.get(archivo))) {
             /*  Una vez que se accede a cada linea, se realizan dos operaciones de mapeo, se convertimos cada linea en un objeto
@@ -94,7 +97,7 @@ public class Main {
             }
         } while (opcionSubmenu != 4);
     }
-
+ // Submenú para la opción 2
     public static void menuBuscar(Scanner scanner, File archivo) {
         int opcionSubmenu;
         do {
@@ -114,12 +117,15 @@ public class Main {
                 case 2:
                     System.out.println("Buscar palabras con F");
                 break;
+                case 3:
+                    System.out.println("Regresando al menu principal");
+                break;
                 default:
                     System.out.println("Opción no válida. Intente de nuevo.");
             }
         } while (opcionSubmenu != 3);
     }
-
+ // Submenú para la opción 3
     public static void menuOrdenamiento(Scanner scanner, File archivo) {
         int opcionSubmenu;
         do {
@@ -169,7 +175,7 @@ public class Main {
                     System.out.println("2. Realizar busqueda");
                     System.out.println("3. Realizar Ordenamiento");
                     System.out.println("4. Salir");
-                    System.out.print("Seleccione una opción: ");
+                    System.out.print("\nSeleccione una opción: ");
         
                     // Leer la opción del usuario
                     opcion = scanner.nextInt();
@@ -180,10 +186,10 @@ public class Main {
                             menuGenerarCadena(scanner, archivo);
                             break;
                         case 2:
-                            System.out.println("Buscando algo ");
+                            menuBuscar(scanner, archivo);
                             break;
                         case 3:
-                            System.out.println("Ordenando");
+                            menuOrdenamiento(scanner, archivo);
                             break;
                         case 4:
                             System.out.println("Saliendo del programa...");
