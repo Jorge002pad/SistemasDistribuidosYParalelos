@@ -99,10 +99,9 @@ public class Main {
         int opcionSubmenu;
         do {
             System.out.println("\n=== SUBMENÚ: Generar Cadena ===");
-            System.out.println("1. Generar 1000 datos");
-            System.out.println("2. Generar 10000 datos");
-            System.out.println("3. Generar 100000 datos");
-            System.out.println("4. Regresar");
+            System.out.println("1. Palabras que contengas 3 veces una vocal");
+            System.out.println("2. Palabras que inicien con F y terminen con 9");
+            System.out.println("3. Regresar");
             System.out.print("Seleccione una opción: ");
 
             opcionSubmenu = scanner.nextInt();
@@ -110,28 +109,26 @@ public class Main {
 
             switch (opcionSubmenu) {
                 case 1:
-                    escribirCadenasEnArchivo(archivo, 1000);
-                    break;
+                    System.out.println("Buscar vocales");
+                break;
                 case 2:
-                    escribirCadenasEnArchivo(archivo, 10000);
-                    break;
-                case 3:
-                    escribirCadenasEnArchivo(archivo, 100000);
-                    break;
+                    System.out.println("Buscar palabras con F");
+                break;
                 default:
                     System.out.println("Opción no válida. Intente de nuevo.");
             }
-        } while (opcionSubmenu != 4);
+        } while (opcionSubmenu != 3);
     }
 
     public static void menuOrdenamiento(Scanner scanner, File archivo) {
         int opcionSubmenu;
         do {
             System.out.println("\n=== SUBMENÚ: Generar Cadena ===");
-            System.out.println("1. Generar 1000 datos");
-            System.out.println("2. Generar 10000 datos");
-            System.out.println("3. Generar 100000 datos");
-            System.out.println("4. Regresar");
+            System.out.println("1. Metodo Merge Ascendente");
+            System.out.println("2. Metodo Merge Descendente");
+            System.out.println("3. Metodo QuickShort Ascendente");
+            System.out.println("4. Metodo QuickShort Descendente");
+            System.out.println("5. Regresar");
             System.out.print("Seleccione una opción: ");
 
             opcionSubmenu = scanner.nextInt();
@@ -139,18 +136,24 @@ public class Main {
 
             switch (opcionSubmenu) {
                 case 1:
-                    escribirCadenasEnArchivo(archivo, 1000);
+                    System.out.println("Metodo Seleccionado: Merge Ascendente");
                     break;
                 case 2:
-                    escribirCadenasEnArchivo(archivo, 10000);
+                    System.out.println("Metodo Seleccionado: Merge Descendente");
                     break;
                 case 3:
-                    escribirCadenasEnArchivo(archivo, 100000);
+                    System.out.println("Metodo Seleccionado: QuickShort Ascendente");
                     break;
+                case 4:
+                    System.out.println("Metodo Seleccionado: QuickShort Descendente");
+                    break;
+                case 5:
+                    System.out.println("Regresando al menu principal");
+                break;
                 default:
                     System.out.println("Opción no válida. Intente de nuevo.");
             }
-        } while (opcionSubmenu != 4);
+        } while (opcionSubmenu != 5);
     }
 
 
