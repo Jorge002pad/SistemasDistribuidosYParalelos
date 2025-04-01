@@ -54,16 +54,28 @@ public class Main {
     public static void buscarVocales(String archivo){
         // Leer archivo línea por línea usando Streams
         try (Stream<String> stream = Files.lines(Paths.get(archivo))) {
-            stream.forEach(System.out::println); // Imprime cada línea en consola
+            stream
+            .filter(palabra -> contarVocales(palabra) > 3)
+            .forEach(System.out::println); // Imprime cada línea en consola
         } catch (IOException e) {
             System.err.println("Error al leer el archivo: " + e.getMessage());
         }
     }
 
+    private static long contarVocales(String palabra) {
+        return palabra.toLowerCase().chars()
+                .filter(c -> "aeiou".indexOf(c) != -1)
+                .count();
+    }
+    
+    /*La funcion busca palabras que inicien con T y terminen con 9
+     * archivo: Archivo donde tomaremos las palabras para la busqueda*/
     public static void buscarIniciaYTermina(String archivo){
         // Leer archivo línea por línea usando Streams
         try (Stream<String> stream = Files.lines(Paths.get(archivo))) {
-            stream.forEach(System.out::println); // Imprime cada línea en consola
+            stream
+            .filter(palabra -> palabra.toLowerCase().startsWith("t") && palabra.endsWith("9"))
+            .forEach(System.out::println); // Imprime cada línea en consola
         } catch (IOException e) {
             System.err.println("Error al leer el archivo: " + e.getMessage());
         }
