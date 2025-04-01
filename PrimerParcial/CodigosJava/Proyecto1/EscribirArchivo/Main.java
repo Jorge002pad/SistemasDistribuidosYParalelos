@@ -40,13 +40,14 @@ public class Main {
         }
     }
  // Submenú para la opción 1
-    public static void menuGenerarCadena(Scanner scanner, File archivo, int cantidadPalabras) {
+    public static void menuGenerarCadena(Scanner scanner, File archivo) {
         int opcionSubmenu;
         do {
             System.out.println("\n=== SUBMENÚ: Generar Cadena ===");
-            System.out.println("1. Mostrar cadena en consola");
-            System.out.println("2. Guardar cadena en un archivo");
-            System.out.println("3. Volver al menú principal");
+            System.out.println("1. Generar 1000 datos");
+            System.out.println("2. Generar 10000 datos");
+            System.out.println("3. Generar 100000 datos");
+            System.out.println("4. Regresar");
             System.out.print("Seleccione una opción: ");
 
             opcionSubmenu = scanner.nextInt();
@@ -54,24 +55,18 @@ public class Main {
 
             switch (opcionSubmenu) {
                 case 1:
-                    String cadena = generarPalabras(10);
-                    System.out.println("Cadena generada: " + cadena);
+                    escribirCadenasEnArchivo(archivo, 1000);
                     break;
                 case 2:
-                    System.out.print("Ingrese el tamaño de la cadena: ");
-                    int sizeArchivo = scanner.nextInt();
-                    scanner.nextLine(); // Consumir la nueva línea
-                    String cadenaArchivo = generarPalabras(sizeArchivo);
-                    escribirCadenasEnArchivo(archivo, 15, cadenaArchivo);
-                    System.out.println("Cadena guardada en 'cadena_unica.txt'");
+                    escribirCadenasEnArchivo(archivo, 10000);
                     break;
                 case 3:
-                    System.out.println("Volviendo al menú principal...");
+                    escribirCadenasEnArchivo(archivo, 100000);
                     break;
                 default:
                     System.out.println("Opción no válida. Intente de nuevo.");
             }
-        } while (opcionSubmenu != 3);
+        } while (opcionSubmenu != 4);
     }
 
     public static void main(String[] args) {
@@ -83,8 +78,9 @@ public class Main {
                     // Mostrar el menú
                     System.out.println("\n=== MENÚ PRINCIPAL ===");
                     System.out.println("1. Generar Cadenas Aleatorias");
-                    System.out.println("2. Guardar 15 cadenas en un archivo");
-                    System.out.println("3. Salir");
+                    System.out.println("2. Realizar busqueda");
+                    System.out.println("3. Realizar Ordenamiento");
+                    System.out.println("4. Salir");
                     System.out.print("Seleccione una opción: ");
         
                     // Leer la opción del usuario
@@ -93,23 +89,21 @@ public class Main {
         
                     switch (opcion) {
                         case 1:
-                            System.out.print("Ingrese el tamaño de la cadena: ");
-                            int size = scanner.nextInt();
-                            scanner.nextLine(); // Consumir la nueva línea
-                            String cadena = generarPalabras(size);
-                            System.out.println("Cadena generada: " + cadena);
+                            menuGenerarCadena(scanner, archivo);
                             break;
                         case 2:
-                            escribirCadenasEnArchivo(archivo,15, 15);
-                            System.out.println("Se han guardado 15 cadenas en " + archivo.toString());
+                            System.out.println("Buscando algo ");
                             break;
                         case 3:
-                            System.out.println("Saliendo del programa...");
+                            System.out.println("Ordenando");
                             break;
+                        case 4:
+                            System.out.println("Saliendo del programa...");
+                        break;
                         default:
                             System.out.println("Opción no válida. Intente de nuevo.");
                     }
-                } while (opcion != 3);
+                } while (opcion != 4);
             
                 scanner.close(); 
     }
