@@ -3,24 +3,36 @@ package Proyecto1.EscribirArchivo;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Scanner;
+import java.util.stream.Stream;
+
+import Dispositivo.Dispositivo;
 
 
 
 public class Main {
-
+    /*La funcion se encarga de generar cadenas alfanumericas aleatorias
+     de tamaño "n" tomando elementos alfanumericos de un arreglo
+     size: tamaño de la cadena
+     return: la palabra generada */
     public static String generarPalabras(int size){
         String valoresAlfanumericos = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvxyz0123456789";
-        StringBuilder s = new StringBuilder(size);
+        StringBuilder palabra = new StringBuilder(size);
         for ( int i=0; i<size; i++) {
             // se genera un numero aleatorio para tomar el caracter
-             int ch = (int)(valoresAlfanumericos.length() * Math.random());
-            //agrega uno a uno un caracter a la cadena s
-            s.append(valoresAlfanumericos.charAt(ch));
+             int indice = (int)(valoresAlfanumericos.length() * Math.random());
+            //agrega uno a uno un caracter a la cadena palabra
+            palabra.append(valoresAlfanumericos.charAt(indice));
         }
-        return s.toString();
+        return palabra.toString();
     }
 
+    /*La funcion se encarga de escribir cadenas obtenidas de la funcion 
+    generarPalabras() dentro de un archivo dado en los parametros
+    archivo: archivo en el que se quiere escribir
+    cantidadPalabras: cantidad de palabras que se escribiran en el archivo*/
     public static void escribirCadenasEnArchivo(File archivo, int cantidadPalabras) {
         try {
             // Crea un FileWriter para escribir en el archivo
@@ -39,6 +51,20 @@ public class Main {
             e.printStackTrace();
         }
     }
+
+    public static void buscarVocales(File archivo){
+        try (Stream<String> stream = Files.lines(Paths.get(archivo))) {
+            /*  Una vez que se accede a cada linea, se realizan dos operaciones de mapeo, se convertimos cada linea en un objeto
+        y posteriormente  en un número.
+        */
+             stream.map(linea -> linea.split(","))
+                  .onClose(() -> System.out.println("\nFinalizando"));   //Double::sum es una función que se utiliza para sumar dos números de punto flotante.
+ 
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
  // Submenú para la opción 1
     public static void menuGenerarCadena(Scanner scanner, File archivo) {
         int opcionSubmenu;
@@ -68,6 +94,65 @@ public class Main {
             }
         } while (opcionSubmenu != 4);
     }
+
+    public static void menuBuscar(Scanner scanner, File archivo) {
+        int opcionSubmenu;
+        do {
+            System.out.println("\n=== SUBMENÚ: Generar Cadena ===");
+            System.out.println("1. Generar 1000 datos");
+            System.out.println("2. Generar 10000 datos");
+            System.out.println("3. Generar 100000 datos");
+            System.out.println("4. Regresar");
+            System.out.print("Seleccione una opción: ");
+
+            opcionSubmenu = scanner.nextInt();
+            scanner.nextLine(); // Consumir la nueva línea
+
+            switch (opcionSubmenu) {
+                case 1:
+                    escribirCadenasEnArchivo(archivo, 1000);
+                    break;
+                case 2:
+                    escribirCadenasEnArchivo(archivo, 10000);
+                    break;
+                case 3:
+                    escribirCadenasEnArchivo(archivo, 100000);
+                    break;
+                default:
+                    System.out.println("Opción no válida. Intente de nuevo.");
+            }
+        } while (opcionSubmenu != 4);
+    }
+
+    public static void menuOrdenamiento(Scanner scanner, File archivo) {
+        int opcionSubmenu;
+        do {
+            System.out.println("\n=== SUBMENÚ: Generar Cadena ===");
+            System.out.println("1. Generar 1000 datos");
+            System.out.println("2. Generar 10000 datos");
+            System.out.println("3. Generar 100000 datos");
+            System.out.println("4. Regresar");
+            System.out.print("Seleccione una opción: ");
+
+            opcionSubmenu = scanner.nextInt();
+            scanner.nextLine(); // Consumir la nueva línea
+
+            switch (opcionSubmenu) {
+                case 1:
+                    escribirCadenasEnArchivo(archivo, 1000);
+                    break;
+                case 2:
+                    escribirCadenasEnArchivo(archivo, 10000);
+                    break;
+                case 3:
+                    escribirCadenasEnArchivo(archivo, 100000);
+                    break;
+                default:
+                    System.out.println("Opción no válida. Intente de nuevo.");
+            }
+        } while (opcionSubmenu != 4);
+    }
+
 
     public static void main(String[] args) {
         // Especifica la ruta del archivo
