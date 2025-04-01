@@ -8,10 +8,6 @@ import java.nio.file.Paths;
 import java.util.Scanner;
 import java.util.stream.Stream;
 
-import Dispositivo.Dispositivo;
-
-
-
 public class Main {
     /*La funcion se encarga de generar cadenas alfanumericas aleatorias
      de tamaño "n" tomando elementos alfanumericos de un arreglo
@@ -55,16 +51,57 @@ public class Main {
     /*La funcion busca palabras que contengan 3 veces una vocal sin importar que sea mayuscula 
      * o minuscula.
      * archivo: Archivo donde tomaremos las palabras para la busqueda*/
-    public static void buscarVocales(File archivo){
+    public static void buscarVocales(String archivo){
+        // Leer archivo línea por línea usando Streams
         try (Stream<String> stream = Files.lines(Paths.get(archivo))) {
-            /*  Una vez que se accede a cada linea, se realizan dos operaciones de mapeo, se convertimos cada linea en un objeto
-        y posteriormente  en un número.
-        */
-             stream.map(linea -> linea.split(","))
-                  .onClose(() -> System.out.println("\nFinalizando"));   //Double::sum es una función que se utiliza para sumar dos números de punto flotante.
- 
+            stream.forEach(System.out::println); // Imprime cada línea en consola
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Error al leer el archivo: " + e.getMessage());
+        }
+    }
+
+    public static void buscarIniciaYTermina(String archivo){
+        // Leer archivo línea por línea usando Streams
+        try (Stream<String> stream = Files.lines(Paths.get(archivo))) {
+            stream.forEach(System.out::println); // Imprime cada línea en consola
+        } catch (IOException e) {
+            System.err.println("Error al leer el archivo: " + e.getMessage());
+        }
+    }
+
+    public static void ordenarMergeAscendente(String archivo){
+        // Leer archivo línea por línea usando Streams
+        try (Stream<String> stream = Files.lines(Paths.get(archivo))) {
+            stream.forEach(System.out::println); // Imprime cada línea en consola
+        } catch (IOException e) {
+            System.err.println("Error al leer el archivo: " + e.getMessage());
+        }
+    }
+
+    public static void ordenarMergeDescendente(String archivo){
+        // Leer archivo línea por línea usando Streams
+        try (Stream<String> stream = Files.lines(Paths.get(archivo))) {
+            stream.forEach(System.out::println); // Imprime cada línea en consola
+        } catch (IOException e) {
+            System.err.println("Error al leer el archivo: " + e.getMessage());
+        }
+    }
+
+    public static void ordenarQuickShortAscendente(String archivo){
+        // Leer archivo línea por línea usando Streams
+        try (Stream<String> stream = Files.lines(Paths.get(archivo))) {
+            stream.forEach(System.out::println); // Imprime cada línea en consola
+        } catch (IOException e) {
+            System.err.println("Error al leer el archivo: " + e.getMessage());
+        }
+    }
+
+    public static void ordenarQuickShortDescendente(String archivo){
+        // Leer archivo línea por línea usando Streams
+        try (Stream<String> stream = Files.lines(Paths.get(archivo))) {
+            stream.forEach(System.out::println); // Imprime cada línea en consola
+        } catch (IOException e) {
+            System.err.println("Error al leer el archivo: " + e.getMessage());
         }
     }
 
@@ -98,7 +135,7 @@ public class Main {
         } while (opcionSubmenu != 4);
     }
  // Submenú para la opción 2
-    public static void menuBuscar(Scanner scanner, File archivo) {
+    public static void menuBuscar(Scanner scanner, String archivo) {
         int opcionSubmenu;
         do {
             System.out.println("\n=== SUBMENÚ: Generar Cadena ===");
@@ -113,9 +150,11 @@ public class Main {
             switch (opcionSubmenu) {
                 case 1:
                     System.out.println("Buscar vocales");
+                    buscarVocales(archivo);
                 break;
                 case 2:
                     System.out.println("Buscar palabras con F");
+                    buscarIniciaYTermina(archivo);
                 break;
                 case 3:
                     System.out.println("Regresando al menu principal");
@@ -126,7 +165,7 @@ public class Main {
         } while (opcionSubmenu != 3);
     }
  // Submenú para la opción 3
-    public static void menuOrdenamiento(Scanner scanner, File archivo) {
+    public static void menuOrdenamiento(Scanner scanner, String archivo) {
         int opcionSubmenu;
         do {
             System.out.println("\n=== SUBMENÚ: Generar Cadena ===");
@@ -143,15 +182,19 @@ public class Main {
             switch (opcionSubmenu) {
                 case 1:
                     System.out.println("Metodo Seleccionado: Merge Ascendente");
+                    ordenarMergeAscendente(archivo);
                     break;
                 case 2:
                     System.out.println("Metodo Seleccionado: Merge Descendente");
+                    ordenarMergeDescendente(archivo);
                     break;
                 case 3:
                     System.out.println("Metodo Seleccionado: QuickShort Ascendente");
+                    ordenarQuickShortAscendente(archivo);
                     break;
                 case 4:
                     System.out.println("Metodo Seleccionado: QuickShort Descendente");
+                    ordenarQuickShortDescendente(archivo);
                     break;
                 case 5:
                     System.out.println("Regresando al menu principal");
@@ -186,10 +229,10 @@ public class Main {
                             menuGenerarCadena(scanner, archivo);
                             break;
                         case 2:
-                            menuBuscar(scanner, archivo);
+                            menuBuscar(scanner, archivo.toString());
                             break;
                         case 3:
-                            menuOrdenamiento(scanner, archivo);
+                            menuOrdenamiento(scanner, archivo.toString());
                             break;
                         case 4:
                             System.out.println("Saliendo del programa...");
