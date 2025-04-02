@@ -55,7 +55,7 @@ public class Main {
         // Leer archivo línea por línea usando Streams
         try (Stream<String> stream = Files.lines(Paths.get(archivo))) {
             stream
-            .filter(palabra -> contarVocales(palabra) > 3)
+            .filter(palabra -> contarVocales(palabra) == 3)
             .forEach(System.out::println); // Imprime cada línea en consola
         } catch (IOException e) {
             System.err.println("Error al leer el archivo: " + e.getMessage());
@@ -68,14 +68,19 @@ public class Main {
                 .count();
     }
     
-    /*La funcion busca palabras que inicien con T y terminen con 9
-     * archivo: Archivo donde tomaremos las palabras para la busqueda*/
+    /*La funcion realiza un conteo de las palabras que 
+     *inicien con T y terminen con 9.
+     *archivo: Archivo donde tomaremos las palabras para la busqueda*/
     public static void buscarIniciaYTermina(String archivo){
         // Leer archivo línea por línea usando Streams
         try (Stream<String> stream = Files.lines(Paths.get(archivo))) {
-            stream
-            .filter(palabra -> palabra.toLowerCase().startsWith("t") && palabra.endsWith("9"))
-            .forEach(System.out::println); // Imprime cada línea en consola
+            
+            System.out.println(stream
+                                .filter(palabra -> palabra.toLowerCase()
+                                                            .startsWith("t") && 
+                                                    palabra.endsWith("9"))
+                                .count()
+                            );
         } catch (IOException e) {
             System.err.println("Error al leer el archivo: " + e.getMessage());
         }
