@@ -202,11 +202,10 @@ public class Main {
             }
             // Cierra el escritor
             escritor.close();
-            System.out.println("\nSi jalo");
+            System.out.println("\nPalabras guardadas en el documento " + archivo.toString());
 
         } catch (IOException e) {
             // Manejo de excepciones en caso de error al crear el archivo
-            System.out.println("\nNo jalo");
             e.printStackTrace();
         }
     }
@@ -251,12 +250,10 @@ public class Main {
 
     public static void ordenarMergeAscendente(String archivo){
         // Leer archivo línea por línea usando Streams
-        System.out.println("111111111111111");
         try (Stream<String> stream = Files.lines(Paths.get(archivo))) {
-            System.out.println("2222222222222222222222");
             // Convertimos el stream en un array de Strings
-            String[] array = stream.toArray(String[]::new);
-            medirTiempo("Merge Sort Ascendente", array.clone(), true, true);
+            String[] arrayMergeAsc = stream.toArray(String[]::new);
+            medirTiempo("Merge Sort Ascendente", arrayMergeAsc.clone(), true, true);
 
         } catch (IOException e) {
             System.err.println("Error al leer el archivo: " + e.getMessage());
@@ -266,7 +263,10 @@ public class Main {
     public static void ordenarMergeDescendente(String archivo){
         // Leer archivo línea por línea usando Streams
         try (Stream<String> stream = Files.lines(Paths.get(archivo))) {
-            stream.forEach(System.out::println); // Imprime cada línea en consola
+            // Convertimos el stream en un array de Strings
+            String[] arrayMergeDes = stream.toArray(String[]::new);
+            medirTiempo("Merge Sort Descendente", arrayMergeDes.clone(), true, false);
+
         } catch (IOException e) {
             System.err.println("Error al leer el archivo: " + e.getMessage());
         }
@@ -275,7 +275,8 @@ public class Main {
     public static void ordenarQuickShortAscendente(String archivo){
         // Leer archivo línea por línea usando Streams
         try (Stream<String> stream = Files.lines(Paths.get(archivo))) {
-            stream.forEach(System.out::println); // Imprime cada línea en consola
+            String[] arrayQuickAsc = stream.toArray(String[]::new);
+            medirTiempo("Quick Sort Ascendente", arrayQuickAsc.clone(), false, true);
         } catch (IOException e) {
             System.err.println("Error al leer el archivo: " + e.getMessage());
         }
@@ -284,7 +285,8 @@ public class Main {
     public static void ordenarQuickShortDescendente(String archivo){
         // Leer archivo línea por línea usando Streams
         try (Stream<String> stream = Files.lines(Paths.get(archivo))) {
-            stream.forEach(System.out::println); // Imprime cada línea en consola
+            String[] arrayQuickDes = stream.toArray(String[]::new);
+            medirTiempo("Quick Sort Descendente", arrayQuickDes.clone(), false, false);
         } catch (IOException e) {
             System.err.println("Error al leer el archivo: " + e.getMessage());
         }
