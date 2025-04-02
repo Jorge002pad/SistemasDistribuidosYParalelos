@@ -1,5 +1,4 @@
 package Proyecto1.EscribirArchivo;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -7,6 +6,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Scanner;
 import java.util.stream.Stream;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.RecursiveAction;
 
 public class Main {
     /*La funcion se encarga de generar cadenas alfanumericas aleatorias
@@ -89,6 +90,8 @@ public class Main {
     public static void ordenarMergeAscendente(String archivo){
         // Leer archivo línea por línea usando Streams
         try (Stream<String> stream = Files.lines(Paths.get(archivo))) {
+            ForkJoinPool pool = new ForkJoinPool();
+            pool.invoke(new MergeSortTask(array, 0, array.length - 1));
             stream.forEach(System.out::println); // Imprime cada línea en consola
         } catch (IOException e) {
             System.err.println("Error al leer el archivo: " + e.getMessage());
