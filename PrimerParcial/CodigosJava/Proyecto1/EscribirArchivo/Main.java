@@ -1,4 +1,3 @@
-package Proyecto1.EscribirArchivo;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -10,55 +9,168 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveAction;
 
 public class Main {
+    public class Ordenamientos {
 
+    public static void ordenarMergeSort(String[] array, boolean ascendente) {
+        ForkJoinPool pool = new ForkJoinPool();
+        MergeSortTask task = new MergeSortTask(array, 0, array.length - 1, ascendente);
+        pool.invoke(task);
+    }
+
+    public static void ordenarQuickSort(String[] array, boolean ascendente) {
+        ForkJoinPool pool = new ForkJoinPool();
+        QuickSortTask task = new QuickSortTask(array, 0, array.length - 1, ascendente);
+        pool.invoke(task);
+    }
+
+    // MergeSort Paralelo
     static class MergeSortTask extends RecursiveAction {
-    private int[] array;
-    private int left;
-    private int right;
-    MergeSortTask(int[] array, int left, int right) {
-        this.array = array;
-        this.left = left;
-        this.right = right;
-    }
-    protected void compute() {
-        if (left < right) {
-            int mid = (left + right) / 2;
-            MergeSortTask leftTask = new MergeSortTask(array, left, mid);
-            MergeSortTask rightTask = new MergeSortTask(array, mid + 1, right);
-            invokeAll(leftTask, rightTask);
-            merge(array, left, mid, right);
+        private String[] array;
+        private int left, right;
+        private boolean ascendente;
+
+        MergeSortTask(String[] array, int left, int right, boolean ascendente) {
+            this.array = array;
+            this.left = left;
+            this.right = right;
+            this.ascendente = ascendente;
         }
-    }
-    private void merge(int[] array, int left, int mid, int right) {
-        int n1 = mid - left + 1;
-        int n2 = right - mid;
-        int[] L = new int[n1];
-        int[] R = new int[n2];
-        System.arraycopy(array, left, L, 0, n1);
-        System.arraycopy(array, mid + 1, R, 0, n2);
-        int i = 0, j = 0, k = left;
-        while (i < n1 && j < n2) {
-            if (L[i] <= R[j]) {
-                array[k] = L[i];
-                i++;
-            } else {
-                array[k] = R[j];
-                j++;
+
+        @Override
+        protected void compute() {
+            if (left < right) {
+                int mid = (left + right) / 2;
+                MergeSortTask leftTask = new MergeSortTask(array, left, mid, ascendente);
+                MergeSortTask rightTask = new MergeSortTask(array, mid + 1, right, ascendente);
+                invokeAll(leftTask, rightTask);
+                merge(array, left, mid, right, ascendente);
             }
-            k++;
         }
-        while (i < n1) {
-            array[k] = L[i];
-            i++;
-            k++;
+
+        private void merge(String[] array, int left, int mid, int right, boolean ascendente) {
+            int n1 = mid - left + 1;
+            int n2 = right - mid;
+            String[] L = new String[n1];
+            String[] R = new String[n2];
+
+            System.arraycopy(array, left, L, 0, n1);
+            System.arraycopy(array, mid + 1, R, 0, n2);
+
+            int i = 0, j = 0, k = left;
+            while (i < n1 && j < n2) {
+                if (compararAlfanumerico(L[i], R[j], ascendente) <= 0) {
+                    array[k++] = L[i++];
+                } else {
+                    array[k++] = R[j++];
+                }
+            }
+
+            while (i < n1) array[k++] = L[i++];
+            while (j < n2) array[k++] = R[j++];
         }
-        while (j < n2) {
-            array[k] = R[j];
-            j++;
-            k++;
+    }
+
+    // QuickSort Paralelo
+    static class QuickSortTask extends RecursiveAction {
+        private String[] array;
+        private int left, right;
+        private boolean ascendente;
+
+        QuickSortTask(String[] array, int left, int right, boolean ascendente) {
+            this.array = array;
+            this.left = left;
+            this.right = right;
+            this.ascendente = ascendente;
         }
+
+        @Override
+        protected void compute() {
+            if (left < right) {
+                int pivotIndex = partition(array, left, right, ascendente);
+                QuickSortTask leftTask = new QuickSortTask(array, left, pivotIndex - 1, ascendente);
+                QuickSortTask rightTask = new QuickSortTask(array, pivotIndex + 1, right, ascendente);
+                invokeAll(leftTask, rightTask);
+            }
+        }
+
+        private int partition(String[] array, int left, int right, boolean ascendente) {
+            String pivot = array[right];
+            int i = left - 1;
+
+            for (int j = left; j < right; j++) {
+                if (compararAlfanumerico(array[j], pivot, ascendente) <= 0) {
+                    i++;
+                    swap(array, i, j);
+                }
+            }
+
+            swap(array, i + 1, right);
+            return i + 1;
+        }
+
+        private void swap(String[] array, int i, int j) {
+            String temp = array[i];
+            array[i] = array[j];
+            array[j] = temp;
+        }
+    }
+
+    // Comparación alfanumérica: Números primero, luego letras
+    private static int compararAlfanumerico(String a, String b, boolean ascendente) {
+        boolean aEsNumero = Character.isDigit(a.charAt(0));
+        boolean bEsNumero = Character.isDigit(b.charAt(0));
+
+        if (aEsNumero && !bEsNumero) return ascendente ? -1 : 1; // Números primero
+        if (!aEsNumero && bEsNumero) return ascendente ? 1 : -1;  // Letras después
+
+        if (aEsNumero && bEsNumero) { // Comparar números numéricamente
+            int numA = extraerNumero(a);
+            int numB = extraerNumero(b);
+            return ascendente ? Integer.compare(numA, numB) : Integer.compare(numB, numA);
+        }
+
+        // Si ambos son letras, comparar alfabéticamente
+        return ascendente ? a.compareToIgnoreCase(b) : b.compareToIgnoreCase(a);
+    }
+
+    private static int extraerNumero(String s) {
+        StringBuilder numero = new StringBuilder();
+        for (char c : s.toCharArray()) {
+            if (Character.isDigit(c)) {
+                numero.append(c);
+            } else {
+                break;
+            }
+        }
+        return numero.length() > 0 ? Integer.parseInt(numero.toString()) : 0;
     }
 }
+
+    private static void medirTiempo(String metodo, String[] array, boolean esMerge, boolean ascendente) {
+        System.out.println("Ejecutando " + metodo + "...");
+
+        long inicio = System.nanoTime(); // Iniciar medición de tiempo
+        if (esMerge) {
+            Ordenamientos.ordenarMergeSort(array, ascendente);
+        } else {
+            Ordenamientos.ordenarQuickSort(array, ascendente);
+        }
+        long fin = System.nanoTime(); // Finalizar medición de tiempo
+
+        long tiempoTotalMs = (fin - inicio) / 1_000_000; // Convertir a milisegundos
+
+        imprimirArray(array);
+
+        System.out.println(metodo + " completado en " + tiempoTotalMs + " ms.");
+        
+    }
+
+    private static void imprimirArray(String[] array) {
+        for (String str : array) {
+            System.out.println(str);
+        }
+        System.out.println();
+    }
 
     /*La funcion se encarga de generar cadenas alfanumericas aleatorias
      de tamaño "n" tomando elementos alfanumericos de un arreglo
@@ -138,13 +250,14 @@ public class Main {
     }
 
     public static void ordenarMergeAscendente(String archivo){
-        int[] array = {38, 27, 43, 3, 9, 82, 10,1,895,79,45,13,2};
         // Leer archivo línea por línea usando Streams
+        System.out.println("111111111111111");
         try (Stream<String> stream = Files.lines(Paths.get(archivo))) {
-            stream.forEach(System.out::println); // Imprime cada línea en consola
-            ForkJoinPool pool = new ForkJoinPool();
-            pool.invoke(new MergeSortTask(array, 0, 10));
-            
+            System.out.println("2222222222222222222222");
+            // Convertimos el stream en un array de Strings
+            String[] array = stream.toArray(String[]::new);
+            medirTiempo("Merge Sort Ascendente", array.clone(), true, true);
+
         } catch (IOException e) {
             System.err.println("Error al leer el archivo: " + e.getMessage());
         }
